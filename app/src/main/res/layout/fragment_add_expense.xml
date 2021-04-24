@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="36dp"
+    tools:context=".view.fragments.AddExpenseFragment">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_comment"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="36dp">
+
+        <EditText
+            android:id="@+id/et_statement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Açıklama" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_comment"
+        tools:layout_editor_absoluteX="36dp">
+
+        <EditText
+            android:id="@+id/et_expense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Harcama" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_expense">
+
+        <RadioButton
+            android:id="@+id/rb_turk_lirasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/turk_lirasi" />
+
+        <RadioButton
+            android:id="@+id/rb_dolar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dolar"
+            android:layout_marginStart="2dp"/>
+
+        <RadioButton
+            android:id="@+id/rb_euro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/euro"
+            android:layout_marginStart="2dp"/>
+
+        <RadioButton
+            android:id="@+id/rb_sterlin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sterlin"
+            android:layout_marginStart="2dp"/>
+    </RadioGroup>
+
+
+    <RadioGroup
+        android:id="@+id/rg_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+        <RadioButton
+            android:id="@+id/rb_bill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bill" />
+
+        <RadioButton
+            android:id="@+id/rb_rent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rent" />
+
+        <RadioButton
+            android:id="@+id/rb_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/other" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_add_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="@string/add"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Harcamalarim</string>
+    <string name="hello">Merhaba</string>
+    <string name="user_spending">Harcamanız</string>
+    <string name="btn_add_text">+ EKLE</string>
+    <string name="user_def_name">İsim Giriniz</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="turk_lirasi">TL</string>
+    <string name="sterlin">Sterlin</string>
+    <string name="euro">Euro</string>
+    <string name="dolar">Dolar</string>
+    <string name="txt_hint_isim_gir">İsminizi Girin</string>
+    <string name="man">Erkek</string>
+    <string name="woman">Kadın</string>
+    <string name="no_gender">Belirtmek İstemiyorum</string>
+    <string name="btn_save">Kaydet</string>
+    <string name="harcama_takip_uygulamasi">Harcama Takip Uygulaması</string>
+    <string name="pass">Geç</string>
+    <string name="finish">Bitir</string>
+    <string name="bill">Fatura</string>
+    <string name="rent">Kira</string>
+    <string name="other">Diğer</string>
+    <string name="add">Ekle</string>
+    <string name="delete">Sil</string>
+</resources>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.cevlikalprn.harcamalarim.view.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_changeUserInfoFragment"
+            app:destination="@id/changeUserInfoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addExpenseFragment"
+            app:destination="@id/addExpenseFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_showTheExpenseFragment"
+            app:destination="@id/showTheExpenseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeUserInfoFragment"
+        android:name="com.cevlikalprn.harcamalarim.view.fragments.ChangeUserInfoFragment"
+        android:label="fragment_change_user_info"
+        tools:layout="@layout/fragment_change_user_info" >
+        <action
+            android:id="@+id/action_changeUserInfoFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/changeUserInfoFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.cevlikalprn.harcamalarim.view.fragments.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.cevlikalprn.harcamalarim.view.fragments.onboarding.ViewPagerFragment"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" >
+        <action
+            android:id="@+id/action_viewPagerFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/viewPagerFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/addExpenseFragment"
+        android:name="com.cevlikalprn.harcamalarim.view.fragments.AddExpenseFragment"
+        android:label="fragment_add_expense"
+        tools:layout="@layout/fragment_add_expense" >
+        <action
+            android:id="@+id/action_addExpenseFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/addExpenseFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/showTheExpenseFragment"
+        android:name="com.cevlikalprn.harcamalarim.view.fragments.ShowTheExpenseFragment"
+        android:label="fragment_show_the_expense"
+        tools:layout="@layout/fragment_show_the_expense" >
+        <action
+            android:id="@+id/action_showTheExpenseFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/showTheExpenseFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="expenseID"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="billType"
+            app:argType="integer" />
+        <argument
+            android:name="statement"
+            app:argType="string"
+            android:defaultValue="Fatura" />
+        <argument
+            android:name="amountOfMoney"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+</navigation>
