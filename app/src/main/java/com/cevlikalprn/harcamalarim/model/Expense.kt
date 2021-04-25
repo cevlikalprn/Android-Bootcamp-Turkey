@@ -3,6 +3,7 @@ package com.cevlikalprn.harcamalarim.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "expense_table")
 data class Expense(
@@ -20,4 +21,4 @@ data class Expense(
 
         @ColumnInfo(name = "currency_type")
         val currencyType: Int
-)
+): Serializable
