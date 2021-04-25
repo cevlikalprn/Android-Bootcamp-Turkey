@@ -1,6 +1,7 @@
 package com.cevlikalprn.harcamalarim.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,13 @@ import com.cevlikalprn.harcamalarim.R
 import com.cevlikalprn.harcamalarim.data.SharedPreferencesManager
 import com.cevlikalprn.harcamalarim.databinding.FragmentHomeBinding
 import com.cevlikalprn.harcamalarim.view.adapters.ExpenseAdapter
+import com.cevlikalprn.harcamalarim.viewmodel.CurrencyViewModel
 import com.cevlikalprn.harcamalarim.viewmodel.ExpenseViewModel
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: ExpenseViewModel
+    private lateinit var expenseViewModel: ExpenseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +34,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.tvUser.setOnClickListener(this)
         binding.btnAdd.setOnClickListener(this)
 
@@ -41,9 +44,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel = ViewModelProvider(this).get(ExpenseViewModel::class.java)
+        expenseViewModel = ViewModelProvider(this).get(ExpenseViewModel::class.java)
 
-        viewModel.readAllData.observe(viewLifecycleOwner, Observer {
+        expenseViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
         })
 
