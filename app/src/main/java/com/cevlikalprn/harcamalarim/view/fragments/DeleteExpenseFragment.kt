@@ -1,5 +1,6 @@
 package com.cevlikalprn.harcamalarim.view.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -47,9 +48,18 @@ class DeleteExpenseFragment : Fragment() {
     }
 
     private fun deleteExpense(expense: Expense) {
-        viewModel.deleteExpense(expense)
-        Toast.makeText(requireContext()," Harcamanız Silindi", Toast.LENGTH_LONG).show()
-        findNavController().navigate(R.id.action_deleteExpenseFragment_to_homeFragment)
+        AlertDialog.Builder(requireContext())
+                .setPositiveButton("Evet"){_,_ ->
+                    viewModel.deleteExpense(expense)
+                    Toast.makeText(requireContext()," Harcamanız Silindi", Toast.LENGTH_LONG).show()
+                    findNavController().navigate(R.id.action_deleteExpenseFragment_to_homeFragment)
+                }
+                .setNegativeButton("Hayır"){_,_ ->
+
+                }
+                .setTitle("${expense.statement} Harcamasını Sil")
+                .setMessage("Silmek istediğinize emin misiniz?")
+                .create().show()
     }
 
 
