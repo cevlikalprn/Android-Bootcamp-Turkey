@@ -12,9 +12,9 @@ import com.cevlikalprn.harcamalarim.model.Expense
 import com.cevlikalprn.harcamalarim.view.fragments.HomeFragmentDirections
 
 
-class ExpensesAdapter(
+class ExpenseAdapter(
         private val context: Context,
-        ): RecyclerView.Adapter<ExpensesAdapter.MyViewHolder>()
+        ): RecyclerView.Adapter<ExpenseAdapter.MyViewHolder>()
 
 {
 

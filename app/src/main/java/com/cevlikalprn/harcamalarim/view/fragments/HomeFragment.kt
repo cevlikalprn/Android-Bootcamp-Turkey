@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cevlikalprn.harcamalarim.R
 import com.cevlikalprn.harcamalarim.data.SharedPreferencesManager
 import com.cevlikalprn.harcamalarim.databinding.FragmentHomeBinding
-import com.cevlikalprn.harcamalarim.model.Expense
-import com.cevlikalprn.harcamalarim.view.adapters.ExpensesAdapter
+import com.cevlikalprn.harcamalarim.view.adapters.ExpenseAdapter
 import com.cevlikalprn.harcamalarim.viewmodel.ExpenseViewModel
 
 class HomeFragment : Fragment(), View.OnClickListener {
@@ -38,7 +37,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         readTheUser()
 
-        val adapter = ExpensesAdapter(requireContext())
+        val adapter = ExpenseAdapter(requireContext())
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
