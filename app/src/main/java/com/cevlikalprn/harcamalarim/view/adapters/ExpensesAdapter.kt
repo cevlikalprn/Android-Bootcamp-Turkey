@@ -47,7 +47,7 @@ class ExpensesAdapter(
         holder.money.text = item.amountOfMoney.toString()
 
         holder.itemView.setOnClickListener{
-            onItemClicked(it, item)
+           onItemClicked(it, item)
         }
     }
 
@@ -66,7 +66,8 @@ class ExpensesAdapter(
         expense: Expense)
     {
         val action = HomeFragmentDirections
-           .actionHomeFragmentToShowTheExpenseFragment(expense)
+           .actionHomeFragmentToDeleteExpenseFragment(expense)
         view.findNavController().navigate(action)
     }
+
 }

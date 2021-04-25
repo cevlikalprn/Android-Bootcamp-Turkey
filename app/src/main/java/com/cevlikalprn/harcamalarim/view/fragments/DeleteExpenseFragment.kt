@@ -10,21 +10,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cevlikalprn.harcamalarim.R
-import com.cevlikalprn.harcamalarim.databinding.FragmentShowTheExpenseBinding
+import com.cevlikalprn.harcamalarim.databinding.FragmentDeleteExpenseBinding
 import com.cevlikalprn.harcamalarim.model.Expense
 import com.cevlikalprn.harcamalarim.viewmodel.ExpenseViewModel
 
-class ShowTheExpenseFragment : Fragment() {
+class DeleteExpenseFragment : Fragment() {
 
-    private val args: ShowTheExpenseFragmentArgs by navArgs()
-    private lateinit var binding: FragmentShowTheExpenseBinding
+    private val args: DeleteExpenseFragmentArgs by navArgs()
+    private lateinit var binding: FragmentDeleteExpenseBinding
     private lateinit var viewModel: ExpenseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentShowTheExpenseBinding.inflate(inflater, container, false)
+        binding = FragmentDeleteExpenseBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,7 +49,7 @@ class ShowTheExpenseFragment : Fragment() {
     private fun deleteExpense(expense: Expense) {
         viewModel.deleteExpense(expense)
         Toast.makeText(requireContext()," Harcamanız Silindi", Toast.LENGTH_LONG).show()
-        findNavController().navigate(R.id.action_showTheExpenseFragment_to_homeFragment)
+        findNavController().navigate(R.id.action_deleteExpenseFragment_to_homeFragment)
     }
 
 
