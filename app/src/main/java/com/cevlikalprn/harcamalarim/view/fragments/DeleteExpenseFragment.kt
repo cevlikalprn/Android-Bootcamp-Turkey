@@ -37,7 +37,7 @@ class DeleteExpenseFragment : Fragment() {
         val expense = args.expense
 
         binding.txtStatementType.text = expense.statement
-        binding.txtAmountOfMoney.text = expense.amountOfMoney.toString()
+        binding.txtAmountOfMoney.text = expense.amountOfMoney.toInt().toString()
 
         val billType = expense.billType
         setImage(billType)

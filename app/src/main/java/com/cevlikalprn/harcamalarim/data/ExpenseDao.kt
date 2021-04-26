@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.cevlikalprn.harcamalarim.model.Expense
+import com.cevlikalprn.harcamalarim.model.Rates
 
 @Dao
 interface ExpenseDao {
@@ -14,9 +15,10 @@ interface ExpenseDao {
     suspend fun addExpense(expense: Expense)
 
     @Query("SELECT * FROM expense_table ORDER BY expenseId DESC")
-    fun readAllData(): LiveData<List<Expense>>
+    suspend fun readAllData(): List<Expense>
 
     @Delete
     suspend fun deleteExpense(expense: Expense)
+
 
 }

@@ -1,12 +1,10 @@
 package com.cevlikalprn.harcamalarim.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.cevlikalprn.harcamalarim.data.ExpenseDatabase
 import com.cevlikalprn.harcamalarim.model.Expense
+import com.cevlikalprn.harcamalarim.model.Rates
 import com.cevlikalprn.harcamalarim.repository.ExpenseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +15,19 @@ class ExpenseViewModel(application: Application): AndroidViewModel(application) 
     private val dao by lazy { ExpenseDatabase.getDatabase(application).expenseDao() }
     private val repository by lazy { ExpenseRepository(dao) }
 
-    val readAllData by lazy { dao.readAllData() }
+    //val readAllData by lazy { dao.readAllData() }
+
+    //val readAllData by lazy { repository.readAllData }
+    val readAllData: MutableLiveData<List<Expense>> = MutableLiveData()
+
+    fun getAllData()
+    {
+        viewModelScope.launch {
+            val list = repository.readAllData()
+            readAllData.value = list
+        }
+
+    }
 
     fun addExpense(expense: Expense)
     {
@@ -32,4 +42,6 @@ class ExpenseViewModel(application: Application): AndroidViewModel(application) 
             repository.deleteExpense(expense)
         }
     }
+
+
 }

@@ -14,11 +14,11 @@ data class Expense(
         val statement: String,
 
         @ColumnInfo(name = "amount_of_money")
-        val amountOfMoney: Int,
+        var amountOfMoney: Double,
 
         @ColumnInfo(name = "bill_type")
         val billType: Int,
 
         @ColumnInfo(name = "currency_type")
-        val currencyType: Int
+        var currencyType: Int
 ): Serializable

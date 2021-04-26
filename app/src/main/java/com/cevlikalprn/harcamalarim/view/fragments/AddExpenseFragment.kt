@@ -87,7 +87,7 @@ class AddExpenseFragment : Fragment() {
             Expense(
                 0,
                 statement,
-                Integer.parseInt(expense),
+                expense.toDouble(),
                 billType,
                 currency)
         )

@@ -44,7 +44,15 @@ class ExpenseAdapter(
         }
 
         holder.statement.text = item.statement
-        holder.money.text = item.amountOfMoney.toString()
+
+        when(item.currencyType)
+        {
+            0 -> holder.money.text = item.amountOfMoney.toInt().toString() + " ₺"
+            1 -> holder.money.text = item.amountOfMoney.toInt().toString() + " $"
+            2 -> holder.money.text = item.amountOfMoney.toInt().toString() + " €"
+            3 -> holder.money.text = item.amountOfMoney.toInt().toString() + " £"
+            else -> holder.money.text = item.amountOfMoney.toInt().toString() + " ₺"
+        }
 
         holder.itemView.setOnClickListener{
            onItemClicked(it, item)
