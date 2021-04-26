@@ -1,10 +1,7 @@
 package com.cevlikalprn.harcamalarim.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.cevlikalprn.harcamalarim.data.ExpenseDao
 import com.cevlikalprn.harcamalarim.model.Expense
-import com.cevlikalprn.harcamalarim.model.Rates
 
 class ExpenseRepository(private val dao: ExpenseDao) {
 

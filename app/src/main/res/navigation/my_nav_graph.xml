@@ -19,6 +19,10 @@
         <action
             android:id="@+id/action_homeFragment_to_deleteExpenseFragment"
             app:destination="@id/deleteExpenseFragment" />
+        <argument
+            android:name="currencyType"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/changeUserInfoFragment"

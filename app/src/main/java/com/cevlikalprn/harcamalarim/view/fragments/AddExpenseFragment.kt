@@ -45,6 +45,7 @@ class AddExpenseFragment : Fragment() {
                     R.id.rb_bill -> rbBillType = 0 // Fatura seçildi
                     R.id.rb_rent -> rbBillType = 1 // Kira seçildi
                     R.id.rb_other -> rbBillType = 2 // Diğer seçildi
+                    else -> rbBillType = 0
                 }
             }
 
@@ -58,6 +59,7 @@ class AddExpenseFragment : Fragment() {
                     R.id.rb_dolar -> rbCurrency = 1 // Dolar seçildi
                     R.id.rb_euro -> rbCurrency = 2 // Euro seçildi
                     R.id.rb_sterlin -> rbCurrency = 3 // Sterlin seçildi
+                    else ->  rbCurrency = 0
                 }
             }
 
@@ -76,7 +78,8 @@ class AddExpenseFragment : Fragment() {
         else
         {
             insertDataToDatabase(statement, expense, rbBillType!!, rbCurrency!!)
-            findNavController().navigate(R.id.action_addExpenseFragment_to_homeFragment)
+            val action = AddExpenseFragmentDirections.actionAddExpenseFragmentToHomeFragment(rbCurrency!!)
+            findNavController().navigate(action)
             Toast.makeText(requireContext(), "Harcamanız Eklendi!",Toast.LENGTH_LONG).show()
         }
 

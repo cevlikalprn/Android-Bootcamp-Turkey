@@ -1,7 +1,6 @@
 package com.cevlikalprn.harcamalarim.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,26 +9,26 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cevlikalprn.harcamalarim.R
 import com.cevlikalprn.harcamalarim.data.SharedPreferencesManager
 import com.cevlikalprn.harcamalarim.databinding.FragmentHomeBinding
 import com.cevlikalprn.harcamalarim.model.Expense
-import com.cevlikalprn.harcamalarim.model.Rates
 import com.cevlikalprn.harcamalarim.view.adapters.ExpenseAdapter
 import com.cevlikalprn.harcamalarim.viewmodel.CurrencyViewModel
 import com.cevlikalprn.harcamalarim.viewmodel.ExpenseViewModel
-import kotlin.math.exp
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var expenseViewModel: ExpenseViewModel
     private lateinit var currencyViewModel: CurrencyViewModel
+    private val args: HomeFragmentArgs by navArgs()
 
     private lateinit var itemList: List<Expense>
     private var base = "TRY"
-
+    private var sum = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +42,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        readTheUser()
         expenseViewModel = ViewModelProvider(this).get(ExpenseViewModel::class.java)
         currencyViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
 
@@ -53,7 +53,26 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.btnEuro.setOnClickListener(this)
         binding.btnDolar.setOnClickListener(this)
 
-        readTheUser()
+        when(args.currencyType)
+        {
+            0 -> {
+                base = "TRY"
+                currencyViewModel.getRates(base)
+            }
+            1 ->{
+                base = "USD"
+                currencyViewModel.getRates(base)
+            }
+            2 -> {
+                base = "EUR"
+                currencyViewModel.getRates(base)
+            }
+            3 ->{
+                base = "GBP"
+                currencyViewModel.getRates(base)
+            }
+        }
+
 
         val adapter = ExpenseAdapter(requireContext())
         binding.recyclerView.adapter = adapter
@@ -61,8 +80,23 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         expenseViewModel.getAllData()
         expenseViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            adapter.setData(it)
             itemList = it
+            adapter.setData(it)
+
+            for (item in itemList)
+            {
+                sum +=item.amountOfMoney
+            }
+            if(itemList.isNotEmpty())
+            {
+                when(itemList[0].currencyType){
+                    0 -> binding.tvTotalMoney.text = sum.toInt().toString() + " ₺"
+                    1 -> binding.tvTotalMoney.text = sum.toInt().toString() + " $"
+                    2 -> binding.tvTotalMoney.text = sum.toInt().toString() + " €"
+                    3 -> binding.tvTotalMoney.text = sum.toInt().toString() + " £"
+                }
+            }
+            sum = 0.0
         })
 
         convertCurrenciesWithApi()
@@ -121,7 +155,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 when(base)
                 {
                     "TRY" -> {
-                        Toast.makeText(requireContext(),"Türk Lirası", Toast.LENGTH_LONG).show()
                         val usd = it.body()!!.rates.USD
                         val eur = it.body()!!.rates.EUR
                         val gbp = it.body()!!.rates.GBP
@@ -154,7 +187,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     }
 
                     "USD" -> {
-                        Toast.makeText(requireContext(),"Dolar", Toast.LENGTH_LONG).show()
                         val gbp = it.body()!!.rates.GBP
                         val eur = it.body()!!.rates.EUR
                         val tl = it.body()!!.rates.TRY
@@ -185,7 +217,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     }
 
                     "EUR" ->{
-                        Toast.makeText(requireContext(),"Euro", Toast.LENGTH_LONG).show()
                         val gbp = it.body()!!.rates.GBP
                         val usd = it.body()!!.rates.USD
                         val tl = it.body()!!.rates.TRY
@@ -216,7 +247,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     }
 
                     "GBP" ->{
-                        Toast.makeText(requireContext(),"Sterlin", Toast.LENGTH_LONG).show()
                         val eur = it.body()!!.rates.EUR
                         val usd = it.body()!!.rates.USD
                         val tl = it.body()!!.rates.TRY

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cevlikalprn.harcamalarim.data.ExpenseDatabase
 import com.cevlikalprn.harcamalarim.model.CurrencyResponse
-import com.cevlikalprn.harcamalarim.model.Rates
 import com.cevlikalprn.harcamalarim.repository.CurrencyRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response

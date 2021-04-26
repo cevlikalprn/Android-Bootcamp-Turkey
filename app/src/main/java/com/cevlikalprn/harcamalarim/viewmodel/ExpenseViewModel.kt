@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.cevlikalprn.harcamalarim.data.ExpenseDatabase
 import com.cevlikalprn.harcamalarim.model.Expense
-import com.cevlikalprn.harcamalarim.model.Rates
 import com.cevlikalprn.harcamalarim.repository.ExpenseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
