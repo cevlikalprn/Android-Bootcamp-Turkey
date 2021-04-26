@@ -14,9 +14,6 @@ class ExpenseViewModel(application: Application): AndroidViewModel(application) 
     private val dao by lazy { ExpenseDatabase.getDatabase(application).expenseDao() }
     private val repository by lazy { ExpenseRepository(dao) }
 
-    //val readAllData by lazy { dao.readAllData() }
-
-    //val readAllData by lazy { repository.readAllData }
     val readAllData: MutableLiveData<List<Expense>> = MutableLiveData()
 
     fun getAllData()

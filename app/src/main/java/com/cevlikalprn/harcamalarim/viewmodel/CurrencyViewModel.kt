@@ -15,8 +15,6 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
     private val repo by lazy { CurrencyRepository() }
     val myRates: MutableLiveData<Response<CurrencyResponse>> = MutableLiveData()
 
-    private val dao by lazy { ExpenseDatabase.getDatabase(application).expenseDao()}
-
     fun getRates(base: String)
     {
         viewModelScope.launch {
