@@ -14,10 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cevlikalprn.harcamalarim.R
 import com.cevlikalprn.harcamalarim.data.SharedPreferencesManager
 import com.cevlikalprn.harcamalarim.databinding.FragmentHomeBinding
+import com.cevlikalprn.harcamalarim.model.CurrencyResponse
 import com.cevlikalprn.harcamalarim.model.Expense
 import com.cevlikalprn.harcamalarim.view.adapters.ExpenseAdapter
 import com.cevlikalprn.harcamalarim.viewmodel.CurrencyViewModel
 import com.cevlikalprn.harcamalarim.viewmodel.ExpenseViewModel
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
@@ -53,26 +57,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.btnEuro.setOnClickListener(this)
         binding.btnDolar.setOnClickListener(this)
 
-        when(args.currencyType)
-        {
-            0 -> {
-                base = "TRY"
-                currencyViewModel.getRates(base)
-            }
-            1 ->{
-                base = "USD"
-                currencyViewModel.getRates(base)
-            }
-            2 -> {
-                base = "EUR"
-                currencyViewModel.getRates(base)
-            }
-            3 ->{
-                base = "GBP"
-                currencyViewModel.getRates(base)
-            }
+        when(args.currencyType) {
+            0 -> base = "TRY"
+            1 -> base = "USD"
+            2 -> base = "EUR"
+            3 -> base = "GBP"
         }
-
 
         val adapter = ExpenseAdapter(requireContext())
         binding.recyclerView.adapter = adapter
@@ -100,10 +90,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         })
 
         convertCurrenciesWithApi()
-
     }
-
-
 
     override fun onClick(view: View?) {
         if (view != null)
@@ -114,19 +101,19 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 R.id.btn_add -> findNavController().navigate(R.id.action_homeFragment_to_addExpenseFragment)
                 R.id.btn_turk_lirasi -> {
                     base = "TRY"
-                    currencyViewModel.getRates(base)
+                    currencyViewModel.setBase(base)
                 }
                 R.id.btn_dolar -> {
                     base = "USD"
-                    currencyViewModel.getRates(base)
+                    currencyViewModel.setBase(base)
                 }
                 R.id.btn_euro -> {
                     base = "EUR"
-                    currencyViewModel.getRates(base)
+                    currencyViewModel.setBase(base)
                 }
                 R.id.btn_sterlin -> {
                     base = "GBP"
-                    currencyViewModel.getRates(base)
+                    currencyViewModel.setBase(base)
                 }
             }
         }
@@ -148,138 +135,127 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun convertCurrenciesWithApi() {
-        currencyViewModel.getRates(base)
-        currencyViewModel.myRates.observe(viewLifecycleOwner, Observer {
-            if(it.isSuccessful)
-            {
-                when(base)
-                {
-                    "TRY" -> {
-                        val usd = it.body()!!.rates.USD
-                        val eur = it.body()!!.rates.EUR
-                        val gbp = it.body()!!.rates.GBP
-                        for(item in itemList)
-                        {
-                            if(item.currencyType != 0){ // Türk Lirası Değilse
-                                when(item.currencyType)
-                                {
-                                    1 -> { //dolar
-                                        val tl = item.amountOfMoney / usd
-                                        item.amountOfMoney = tl
-                                        item.currencyType = 0
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    2 -> { // euro
-                                        val tl = item.amountOfMoney/ eur
-                                        item.amountOfMoney = tl
-                                        item.currencyType = 0
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    3 -> { // sterlin
-                                        val tl = item.amountOfMoney / gbp
-                                        item.amountOfMoney = tl
-                                        item.currencyType = 0
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
+        currencyViewModel.getRates(base).observe(viewLifecycleOwner, Observer {
+            when (base) {
+                "TRY" -> {
+                    val usd = it.rates.USD
+                    val eur = it.rates.EUR
+                    val gbp = it.rates.GBP
+                    for (item in itemList) {
+                        if (item.currencyType != 0) { // Türk Lirası Değilse
+                            when (item.currencyType) {
+                                1 -> { //dolar
+                                    val tl = item.amountOfMoney / usd
+                                    item.amountOfMoney = tl
+                                    item.currencyType = 0
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                2 -> { // euro
+                                    val tl = item.amountOfMoney / eur
+                                    item.amountOfMoney = tl
+                                    item.currencyType = 0
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                3 -> { // sterlin
+                                    val tl = item.amountOfMoney / gbp
+                                    item.amountOfMoney = tl
+                                    item.currencyType = 0
+                                    expenseViewModel.readAllData.value = itemList
                                 }
                             }
                         }
                     }
+                }
 
-                    "USD" -> {
-                        val gbp = it.body()!!.rates.GBP
-                        val eur = it.body()!!.rates.EUR
-                        val tl = it.body()!!.rates.TRY
-                        for(item in itemList){
-                            if(item.currencyType != 1){ // Dolar Değilse
-                                when(item.currencyType){
-                                    0 -> { //türk lirası
-                                        val dollar = item.amountOfMoney / tl
-                                        item.amountOfMoney = dollar
-                                        item.currencyType = 1
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    2 -> { // euro
-                                        val dollar = item.amountOfMoney / eur
-                                        item.amountOfMoney = dollar
-                                        item.currencyType = 1
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    3 -> { // sterlin
-                                        val dollar = item.amountOfMoney / gbp
-                                        item.amountOfMoney = dollar
-                                        item.currencyType = 1
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
+                "USD" -> {
+                    val gbp = it.rates.GBP
+                    val eur = it.rates.EUR
+                    val tl = it.rates.TRY
+                    for (item in itemList) {
+                        if (item.currencyType != 1) { // Dolar Değilse
+                            when (item.currencyType) {
+                                0 -> { //türk lirası
+                                    val dollar = item.amountOfMoney / tl
+                                    item.amountOfMoney = dollar
+                                    item.currencyType = 1
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                2 -> { // euro
+                                    val dollar = item.amountOfMoney / eur
+                                    item.amountOfMoney = dollar
+                                    item.currencyType = 1
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                3 -> { // sterlin
+                                    val dollar = item.amountOfMoney / gbp
+                                    item.amountOfMoney = dollar
+                                    item.currencyType = 1
+                                    expenseViewModel.readAllData.value = itemList
                                 }
                             }
                         }
                     }
+                }
 
-                    "EUR" ->{
-                        val gbp = it.body()!!.rates.GBP
-                        val usd = it.body()!!.rates.USD
-                        val tl = it.body()!!.rates.TRY
-                        for(item in itemList){
-                            if(item.currencyType != 2){ // Euro Değilse
-                                when(item.currencyType){
-                                    0 -> { //türk lirası
-                                        val euro = item.amountOfMoney / tl
-                                        item.amountOfMoney = euro
-                                        item.currencyType = 2
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    1 -> { // dolar
-                                        val euro = item.amountOfMoney / usd
-                                        item.amountOfMoney = euro
-                                        item.currencyType = 2
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    3 -> { // sterlin
-                                        val euro = item.amountOfMoney / gbp
-                                        item.amountOfMoney = euro
-                                        item.currencyType = 2
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
+                "EUR" -> {
+                    val gbp = it.rates.GBP
+                    val usd = it.rates.USD
+                    val tl = it.rates.TRY
+                    for (item in itemList) {
+                        if (item.currencyType != 2) { // Euro Değilse
+                            when (item.currencyType) {
+                                0 -> { //türk lirası
+                                    val euro = item.amountOfMoney / tl
+                                    item.amountOfMoney = euro
+                                    item.currencyType = 2
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                1 -> { // dolar
+                                    val euro = item.amountOfMoney / usd
+                                    item.amountOfMoney = euro
+                                    item.currencyType = 2
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                3 -> { // sterlin
+                                    val euro = item.amountOfMoney / gbp
+                                    item.amountOfMoney = euro
+                                    item.currencyType = 2
+                                    expenseViewModel.readAllData.value = itemList
                                 }
                             }
                         }
                     }
-
-                    "GBP" ->{
-                        val eur = it.body()!!.rates.EUR
-                        val usd = it.body()!!.rates.USD
-                        val tl = it.body()!!.rates.TRY
-                        for(item in itemList){
-                            if(item.currencyType != 3){ // Sterlin Değilse
-                                when(item.currencyType){
-                                    0 -> { //türk lirası
-                                        val gbp = item.amountOfMoney / tl
-                                        item.amountOfMoney = gbp
-                                        item.currencyType = 3
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    1 -> { // dolar
-                                        val gbp = item.amountOfMoney / usd
-                                        item.amountOfMoney = gbp
-                                        item.currencyType = 3
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
-                                    2 -> { // euro
-                                        val gbp = item.amountOfMoney / eur
-                                        item.amountOfMoney = gbp
-                                        item.currencyType = 3
-                                        expenseViewModel.readAllData.value = itemList
-                                    }
+                }
+                "GBP" -> {
+                    val eur = it.rates.EUR
+                    val usd = it.rates.USD
+                    val tl = it.rates.TRY
+                    for (item in itemList) {
+                        if (item.currencyType != 3) { // Sterlin Değilse
+                            when (item.currencyType) {
+                                0 -> { //türk lirası
+                                    val gbp = item.amountOfMoney / tl
+                                    item.amountOfMoney = gbp
+                                    item.currencyType = 3
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                1 -> { // dolar
+                                    val gbp = item.amountOfMoney / usd
+                                    item.amountOfMoney = gbp
+                                    item.currencyType = 3
+                                    expenseViewModel.readAllData.value = itemList
+                                }
+                                2 -> { // euro
+                                    val gbp = item.amountOfMoney / eur
+                                    item.amountOfMoney = gbp
+                                    item.currencyType = 3
+                                    expenseViewModel.readAllData.value = itemList
                                 }
                             }
                         }
                     }
-
                 }
             }
         })
     }
-
-
 }
