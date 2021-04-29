@@ -13,14 +13,8 @@ data class Expense(
         @ColumnInfo(name = "statement")
         val statement: String,
 
-        @ColumnInfo(name = "turk_lirasi")
-        var turkLirasi: Double,
-
-        var dollar: Double,
-
-        var euro: Double,
-
-        var sterlin: Double,
+        @ColumnInfo(name = "amount_of_money")
+        var amountOfMoney: Double,
 
         @ColumnInfo(name = "bill_type")
         val billType: Int,

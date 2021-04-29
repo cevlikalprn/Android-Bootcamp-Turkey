@@ -8,7 +8,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cevlikalprn.harcamalarim.model.Expense
 
-@Database(entities = [Expense::class], version = 5, exportSchema = false)
+@Database(entities = [Expense::class], version = 6, exportSchema = false)
 abstract class ExpenseDatabase: RoomDatabase() {
 
     abstract fun expenseDao(): ExpenseDao

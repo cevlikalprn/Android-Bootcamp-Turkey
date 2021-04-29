@@ -27,18 +27,6 @@ class AddExpenseFragment : Fragment() {
     private var rbBillType: Int? = null
     private var rbCurrency: Int? = null
 
-    private var base = "TRY"
-    private var tl: Double? = null
-    private var eur: Double? = null
-    private var usd: Double? = null
-    private var gbp: Double? = null
-
-    private var turkLirasi: Double? = null
-    private var euro: Double? = null
-    private var dollar: Double? = null
-    private var sterlin: Double? = null
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,60 +62,14 @@ class AddExpenseFragment : Fragment() {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                 when(checkedId)
                 {
-                    R.id.rb_turk_lirasi -> {
-                        rbCurrency = 0
-                        base = "TRY"
-                        currencyViewModel.getRates(base)
-                    } // Türk Lirası seçildi
-                    R.id.rb_dolar -> {
-                        rbCurrency = 1
-                        base = "USD"
-                        currencyViewModel.getRates(base)
-                    } // Dolar seçildi
-                    R.id.rb_euro -> {
-                        rbCurrency = 2
-                        base = "EUR"
-                        currencyViewModel.getRates(base)
-                    } // Euro seçildi
-                    R.id.rb_sterlin -> {
-                        rbCurrency = 3
-                        base = "GBP"
-                        currencyViewModel.getRates(base)
-                    } // Sterlin seçildi
-                    else ->  {
-                        rbCurrency = 0
-                        base = "TRY"
-                        currencyViewModel.getRates(base)
-                    }
+                    R.id.rb_turk_lirasi -> rbCurrency = 0
+                    R.id.rb_dolar -> rbCurrency = 1
+                    R.id.rb_euro -> rbCurrency = 2
+                    R.id.rb_sterlin -> rbCurrency = 3
+                    else -> rbCurrency = 0
                 }
             }
 
-        })
-
-        currencyViewModel.getRates(base).observe(viewLifecycleOwner, Observer {
-            when(base)
-            {
-                "TRY" -> {
-                    eur = it.rates.EUR
-                    usd=it.rates.USD
-                    gbp = it.rates.GBP
-                }
-                "USD" ->{
-                    eur = it.rates.EUR
-                    tl = it.rates.TRY
-                    gbp = it.rates.GBP
-                }
-                "EUR" -> {
-                    usd = it.rates.USD
-                    tl = it.rates.TRY
-                    gbp = it.rates.GBP
-                }
-                "GBP" ->{
-                    eur = it.rates.EUR
-                    tl = it.rates.TRY
-                    usd = it.rates.USD
-                }
-            }
         })
 
     }
@@ -143,34 +85,7 @@ class AddExpenseFragment : Fragment() {
         }
         else
         {
-            when(rbCurrency)
-            {
-                0 -> {
-                    euro = expense.toInt() * eur!!
-                    dollar = expense.toInt() * usd!!
-                    sterlin = expense.toInt() * gbp!!
-                    turkLirasi = expense.toDouble()
-                }
-                1-> {
-                    euro = expense.toInt() * eur!!
-                    turkLirasi = expense.toInt() * tl!!
-                    sterlin = expense.toInt() * gbp!!
-                    dollar = expense.toDouble()
-                }
-                2 -> {
-                    turkLirasi = expense.toInt() * tl!!
-                    dollar = expense.toInt() * usd!!
-                    sterlin = expense.toInt() * gbp!!
-                    euro = expense.toDouble()
-                }
-                3 -> {
-                    euro = expense.toInt() * eur!!
-                    dollar = expense.toInt() * usd!!
-                    turkLirasi = expense.toInt() * tl!!
-                    sterlin = expense.toDouble()
-                }
-            }
-            insertDataToDatabase(statement)
+            insertDataToDatabase(statement, expense ,rbCurrency)
             val action = AddExpenseFragmentDirections.actionAddExpenseFragmentToHomeFragment(rbCurrency!!)
             findNavController().navigate(action)
             Toast.makeText(requireContext(), "Harcamanız Eklendi!",Toast.LENGTH_LONG).show()
@@ -178,17 +93,13 @@ class AddExpenseFragment : Fragment() {
 
     }
 
-    private fun insertDataToDatabase(statement: String) {
+    private fun insertDataToDatabase(statement: String, expense: String ,rbCurrency: Int?) {
         expenseViewModel.addExpense(
             Expense(0,
                 statement,
-                turkLirasi!!,
-                dollar!!,
-                euro!!,
-                sterlin!!,
+                expense.toDouble(),
                 rbBillType!!,
                 rbCurrency!!)
         )
     }
-
 }

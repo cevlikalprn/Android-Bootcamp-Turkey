@@ -44,16 +44,13 @@ class ExpenseAdapter(
         }
         holder.statement.text = item.statement
 
-        val preferences = SharedPreferencesManager.getSharedPreferences(context)
-
-        when(preferences!!.getInt("type", 0))
+        when(item.currencyType)
         {
-            0 -> holder.money.text = item.turkLirasi.toInt().toString() + " ₺"
-            1 -> holder.money.text = item.dollar.toInt().toString() + " $"
-            2 -> holder.money.text = item.euro.toInt().toString() + " €"
-            3 -> holder.money.text = item.sterlin.toInt().toString() + " £"
-            else -> holder.money.text = item.turkLirasi.toInt().toString() + " ₺"
-
+            0 -> holder.money.text = item.amountOfMoney.toInt().toString() + " ₺"
+            1 -> holder.money.text = item.amountOfMoney.toInt().toString() + " $"
+            2 -> holder.money.text = item.amountOfMoney.toInt().toString() + " €"
+            3 -> holder.money.text = item.amountOfMoney.toInt().toString() + " £"
+            else -> holder.money.text = item.amountOfMoney.toInt().toString() + " ₺"
         }
 
         holder.itemView.setOnClickListener{

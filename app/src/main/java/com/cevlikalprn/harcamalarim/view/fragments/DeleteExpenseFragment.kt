@@ -40,14 +40,13 @@ class DeleteExpenseFragment : Fragment() {
         val billType = expense.billType
         setImage(billType)
 
-        val preferences = SharedPreferencesManager.getSharedPreferences(requireContext())
-        when(preferences!!.getInt("type",0))
+        when(expense.currencyType)
         {
-            0 -> binding.txtAmountOfMoney.text = expense.turkLirasi.toInt().toString()+ " ₺"
-            1 -> binding.txtAmountOfMoney.text = expense.dollar.toInt().toString()+ " $"
-            2 -> binding.txtAmountOfMoney.text = expense.euro.toInt().toString()+ " €"
-            3 -> binding.txtAmountOfMoney.text = expense.sterlin.toInt().toString()+ " £"
-            else -> binding.txtAmountOfMoney.text = expense.turkLirasi.toInt().toString()+ " ₺"
+            0 -> binding.txtAmountOfMoney.text = expense.amountOfMoney.toInt().toString()+ " ₺"
+            1 -> binding.txtAmountOfMoney.text = expense.amountOfMoney.toInt().toString()+ " $"
+            2 -> binding.txtAmountOfMoney.text = expense.amountOfMoney.toInt().toString()+ " €"
+            3 -> binding.txtAmountOfMoney.text = expense.amountOfMoney.toInt().toString()+ " £"
+            else -> binding.txtAmountOfMoney.text = expense.amountOfMoney.toInt().toString()+ " ₺"
         }
 
         binding.btnDelete.setOnClickListener {
