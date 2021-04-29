@@ -34,6 +34,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var preferences: SharedPreferences
     private var base = "TRY"
     private var sum = 0.0
+    private var currencyUnit = "₺"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,13 +124,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
         for(item in itemList){
             when(currencyType)
             {
-                0 -> sum += item.turkLirasi
-                1 -> sum += item.dollar
-                2 -> sum += item.euro
-                3 -> sum += item.sterlin
+                0 -> {
+                    sum += item.turkLirasi
+                    currencyUnit = "₺"
+                }
+                1 -> {
+                    sum += item.dollar
+                    currencyUnit = "$"
+                }
+                2 -> {
+                    sum += item.euro
+                    currencyUnit = "€"
+                }
+                3 -> {
+                    sum += item.sterlin
+                    currencyUnit = "£"
+                }
             }
         }
-        binding.tvTotalMoney.text = sum.toInt().toString()
+        binding.tvTotalMoney.text = sum.toInt().toString()+currencyUnit
         sum = 0.0
     }
 
