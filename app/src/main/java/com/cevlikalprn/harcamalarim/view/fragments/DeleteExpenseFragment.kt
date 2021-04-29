@@ -59,7 +59,8 @@ class DeleteExpenseFragment : Fragment() {
             .setPositiveButton("Evet"){_,_ ->
                 viewModel.deleteExpense(expense)
                 Toast.makeText(requireContext()," Harcamanız Silindi", Toast.LENGTH_LONG).show()
-                findNavController().navigate(R.id.action_deleteExpenseFragment_to_homeFragment)
+                val action = DeleteExpenseFragmentDirections.actionDeleteExpenseFragmentToHomeFragment(expense.currencyType)
+                findNavController().navigate(action)
             }
             .setNegativeButton("Hayır"){_,_ ->
 
