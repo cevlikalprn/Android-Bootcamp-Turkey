@@ -73,70 +73,72 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        expenseViewModel.getAllData().observe(viewLifecycleOwner, Observer {
+            itemList=it
+            adapter.setData(it)
+            showTotalAmountOfMoney(it)
+        })
 
         currencyViewModel.getRates(Constants.base).observe(viewLifecycleOwner, Observer {
             val usd =it.rates.USD
             val eur = it.rates.EUR
             val gbp = it.rates.GBP
 
-            for(item in itemList)
-            {
-                val type = preferences.getInt("type",0)
-                val currencyType = item.currencyType
-
-                when(type)
+            if(itemList.isNotEmpty()){
+                for(item in itemList)
                 {
-                    0 -> { // Türk Lirası
-                        if(currencyType != 0)
-                        {
-                            convertToTurkLirasi(item, usd, eur, gbp)
-                            expenseViewModel.readAllData.value = itemList
-                        }
-                    }
-                    1 -> { // Dolar
-                        if(currencyType != 1){
+                    val type = preferences.getInt("type",0)
+                    val currencyType = item.currencyType
+
+                    when(type)
+                    {
+                        0 -> { // Türk Lirası
                             if(currencyType != 0)
                             {
-                                convertToTurkLirasi(item,usd,eur,gbp)
+                                convertToTurkLirasi(item, usd, eur, gbp)
+                                expenseViewModel.readAllData.value = itemList
                             }
-                            val dollar = item.amountOfMoney * usd
-                            item.amountOfMoney = dollar
-                            item.currencyType = 1
-                            expenseViewModel.readAllData.value = itemList
                         }
-                    }
-                    2 -> { // Euro
-                        if(currencyType != 2) {
-                            if(currencyType != 0)
-                            {
-                                convertToTurkLirasi(item,usd,eur,gbp)
+                        1 -> { // Dolar
+                            if(currencyType != 1){
+                                if(currencyType != 0)
+                                {
+                                    convertToTurkLirasi(item,usd,eur,gbp)
+                                }
+                                val dollar = item.amountOfMoney * usd
+                                item.amountOfMoney = dollar
+                                item.currencyType = 1
+                                expenseViewModel.readAllData.value = itemList
                             }
-                            val euro = item.amountOfMoney * eur
-                            item.amountOfMoney = euro
-                            item.currencyType = 2
-                            expenseViewModel.readAllData.value = itemList
                         }
-                    }
-                    3 -> { // Sterlin
-                        if(currencyType != 3){
-                            if(currencyType != 0)
-                            {
-                                convertToTurkLirasi(item,usd,eur,gbp)
+                        2 -> { // Euro
+                            if(currencyType != 2) {
+                                if(currencyType != 0)
+                                {
+                                    convertToTurkLirasi(item,usd,eur,gbp)
+                                }
+                                val euro = item.amountOfMoney * eur
+                                item.amountOfMoney = euro
+                                item.currencyType = 2
+                                expenseViewModel.readAllData.value = itemList
                             }
-                            val sterlin = item.amountOfMoney * gbp
-                            item.amountOfMoney = sterlin
-                            item.currencyType = 3
-                            expenseViewModel.readAllData.value = itemList
+                        }
+                        3 -> { // Sterlin
+                            if(currencyType != 3){
+                                if(currencyType != 0)
+                                {
+                                    convertToTurkLirasi(item,usd,eur,gbp)
+                                }
+                                val sterlin = item.amountOfMoney * gbp
+                                item.amountOfMoney = sterlin
+                                item.currencyType = 3
+                                expenseViewModel.readAllData.value = itemList
+                            }
                         }
                     }
                 }
             }
-        })
 
-        expenseViewModel.getAllData().observe(viewLifecycleOwner, Observer {
-            itemList=it
-            adapter.setData(it)
-            showTotalAmountOfMoney(it)
         })
 
     }

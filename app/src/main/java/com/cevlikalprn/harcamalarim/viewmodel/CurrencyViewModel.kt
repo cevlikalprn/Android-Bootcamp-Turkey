@@ -22,30 +22,22 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
 
     val preferences = SharedPreferencesManager.getSharedPreferences(application)
 
-    fun setBase(base: String){
-        getRates(base)
-    }
-
     fun getRates(base: String): MutableLiveData<CurrencyResponse>
     {
         viewModelScope.launch {
-            Log.d("tag","1")
             repo.getRates(base).enqueue(object : Callback<CurrencyResponse>{
                 override fun onResponse(
                     call: Call<CurrencyResponse>,
                     response: Response<CurrencyResponse>
                 ) {
-                    Log.d("tag","2")
                     if(response.isSuccessful)
                     {
-                        Log.d("tag","3")
                         saveLatestCurrencyRates(response)
                         myRates.value = response.body()
                     }
                 }
 
                 override fun onFailure(call: Call<CurrencyResponse>, t: Throwable) {
-                    Log.d("tag","4")
                     getDefaultCurrencyRates(base)
                 }
             })
