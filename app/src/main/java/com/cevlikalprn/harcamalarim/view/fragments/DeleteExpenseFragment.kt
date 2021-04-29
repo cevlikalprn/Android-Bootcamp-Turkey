@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cevlikalprn.harcamalarim.R
+import com.cevlikalprn.harcamalarim.data.SharedPreferencesManager
 import com.cevlikalprn.harcamalarim.databinding.FragmentDeleteExpenseBinding
 import com.cevlikalprn.harcamalarim.model.Expense
 import com.cevlikalprn.harcamalarim.viewmodel.ExpenseViewModel
@@ -35,12 +36,19 @@ class DeleteExpenseFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ExpenseViewModel::class.java)
 
         val expense = args.expense
-
         binding.txtStatementType.text = expense.statement
-        binding.txtAmountOfMoney.text = expense.amountOfMoney.toInt().toString()
-
         val billType = expense.billType
         setImage(billType)
+
+        val preferences = SharedPreferencesManager.getSharedPreferences(requireContext())
+        when(preferences!!.getInt("type",0))
+        {
+            0 -> binding.txtAmountOfMoney.text = expense.turkLirasi.toInt().toString()+ " ₺"
+            1 -> binding.txtAmountOfMoney.text = expense.dollar.toInt().toString()+ " $"
+            2 -> binding.txtAmountOfMoney.text = expense.euro.toInt().toString()+ " €"
+            3 -> binding.txtAmountOfMoney.text = expense.sterlin.toInt().toString()+ " £"
+            else -> binding.txtAmountOfMoney.text = expense.turkLirasi.toInt().toString()+ " ₺"
+        }
 
         binding.btnDelete.setOnClickListener {
             deleteExpense(expense)
@@ -49,17 +57,17 @@ class DeleteExpenseFragment : Fragment() {
 
     private fun deleteExpense(expense: Expense) {
         AlertDialog.Builder(requireContext())
-                .setPositiveButton("Evet"){_,_ ->
-                    viewModel.deleteExpense(expense)
-                    Toast.makeText(requireContext()," Harcamanız Silindi", Toast.LENGTH_LONG).show()
-                    findNavController().navigate(R.id.action_deleteExpenseFragment_to_homeFragment)
-                }
-                .setNegativeButton("Hayır"){_,_ ->
+            .setPositiveButton("Evet"){_,_ ->
+                viewModel.deleteExpense(expense)
+                Toast.makeText(requireContext()," Harcamanız Silindi", Toast.LENGTH_LONG).show()
+                findNavController().navigate(R.id.action_deleteExpenseFragment_to_homeFragment)
+            }
+            .setNegativeButton("Hayır"){_,_ ->
 
-                }
-                .setTitle("${expense.statement} Harcamasını Sil")
-                .setMessage("Silmek istediğinize emin misiniz?")
-                .create().show()
+            }
+            .setTitle("${expense.statement} Harcamasını Sil")
+            .setMessage("Silmek istediğinize emin misiniz?")
+            .create().show()
     }
 
 

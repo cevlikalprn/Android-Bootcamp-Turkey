@@ -1,20 +1,22 @@
 package com.cevlikalprn.harcamalarim.view.adapters
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cevlikalprn.harcamalarim.R
+import com.cevlikalprn.harcamalarim.data.SharedPreferencesManager
 import com.cevlikalprn.harcamalarim.databinding.ExpenseItemBinding
 import com.cevlikalprn.harcamalarim.model.Expense
 import com.cevlikalprn.harcamalarim.view.fragments.HomeFragmentDirections
 
 
 class ExpenseAdapter(
-        private val context: Context,
-        ): RecyclerView.Adapter<ExpenseAdapter.MyViewHolder>()
+    private val context: Context,
+): RecyclerView.Adapter<ExpenseAdapter.MyViewHolder>()
 
 {
 
@@ -32,9 +34,7 @@ class ExpenseAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
         val item = itemList[position]
-
         when(item.billType)
         {
             0 -> holder.billImage.setImageResource(R.drawable.receipt) // fatura
@@ -42,20 +42,22 @@ class ExpenseAdapter(
             2 -> holder.billImage.setImageResource(R.drawable.shopping) // diğer
             else -> holder.billImage.setImageResource(R.drawable.bill)
         }
-
         holder.statement.text = item.statement
 
-        when(item.currencyType)
+        val preferences = SharedPreferencesManager.getSharedPreferences(context)
+
+        when(preferences!!.getInt("type", 0))
         {
-            0 -> holder.money.text = item.amountOfMoney.toInt().toString() + " ₺"
-            1 -> holder.money.text = item.amountOfMoney.toInt().toString() + " $"
-            2 -> holder.money.text = item.amountOfMoney.toInt().toString() + " €"
-            3 -> holder.money.text = item.amountOfMoney.toInt().toString() + " £"
-            else -> holder.money.text = item.amountOfMoney.toInt().toString() + " ₺"
+            0 -> holder.money.text = item.turkLirasi.toInt().toString() + " ₺"
+            1 -> holder.money.text = item.dollar.toInt().toString() + " $"
+            2 -> holder.money.text = item.euro.toInt().toString() + " €"
+            3 -> holder.money.text = item.sterlin.toInt().toString() + " £"
+            else -> holder.money.text = item.turkLirasi.toInt().toString() + " ₺"
+
         }
 
         holder.itemView.setOnClickListener{
-           onItemClicked(it, item)
+            onItemClicked(it, item)
         }
     }
 
@@ -74,7 +76,7 @@ class ExpenseAdapter(
         expense: Expense)
     {
         val action = HomeFragmentDirections
-           .actionHomeFragmentToDeleteExpenseFragment(expense)
+            .actionHomeFragmentToDeleteExpenseFragment(expense)
         view.findNavController().navigate(action)
     }
 
