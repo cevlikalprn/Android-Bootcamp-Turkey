@@ -1,7 +1,6 @@
 package com.cevlikalprn.harcamalarim.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -48,18 +47,18 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
 
     //Api'den gelen son verilerin saklanması.
     private fun saveLatestCurrencyRates(response:Response<CurrencyResponse> ) {
-        preferences?.edit()?.putFloat("TRY_TO_USD", response.body()!!.rates.USD.toFloat())?.apply()
-        preferences?.edit()?.putFloat("TRY_TO_EUR", response.body()!!.rates.EUR.toFloat())?.apply()
-        preferences?.edit()?.putFloat("TRY_TO_GBP", response.body()!!.rates.GBP.toFloat())?.apply()
+        preferences?.edit()?.putFloat("USD_TO_TRY", response.body()!!.rates.USD.toFloat())?.apply()
+        preferences?.edit()?.putFloat("EUR_TO_TRY", response.body()!!.rates.EUR.toFloat())?.apply()
+        preferences?.edit()?.putFloat("GBP_TO_TRY", response.body()!!.rates.GBP.toFloat())?.apply()
     }
 
     //Uygulamanın ilk açılışı da dahil olmak üzere internet bağlantısı gerçekleşmemişse ya da veri api'den gelmemişse.
     // Senaryo 1 : İlk açılışta internet bağlantısı yoksa veriler benim default olarak girdiğim sonuçlardan elde edilir.
     // Senaryo 2: Eğer ilk açılışta herhangi bir bağlantı sağlanmışsa veriler api'den temin edilir ve son güncel kur saklanır.
     private fun getDefaultCurrencyRates(base: String){
-        val usd = preferences?.getFloat("TRY_TO_USD", Constants.TRY_TO_USD) //veri yoksa defalult değer Constants'da
-        val eur = preferences?.getFloat("TRY_TO_EUR", Constants.TRY_TO_EUR)
-        val gbp = preferences?.getFloat("TRY_TO_GBP", Constants.TRY_TO_GBP)
+        val usd = preferences?.getFloat("USD_TO_TRY", Constants.USD_TO_TRY) //veri yoksa defalult değer Constants'da
+        val eur = preferences?.getFloat("EUR_TO_TRY", Constants.EUR_TO_TRY)
+        val gbp = preferences?.getFloat("GBP_TO_TRY", Constants.GBP_TO_TRY)
         myRates.value = CurrencyResponse(base, Rates(eur!!.toDouble(),gbp!!.toDouble(),0.0,usd!!.toDouble()))
     }
 
