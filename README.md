@@ -6,7 +6,7 @@ Uygulamanın amacı kullanıcının harcamalarını takip edebilmesi ve bu harca
 Bu amaç doğrultusunda geliştirilen bu projede kullanıcının harcamaları bir api sayesinde farklı para birimlerine çevrilecek ve internetin olmadığı bir durum da dahil olmak üzere 
 kullanıcıya sunulacaktır.
 
-Kullanılan kütüphaneler: Room, Retrofit, Navigation, View Binding, RecyclerView
+Kullanılan kütüphaneler: Room, Retrofit, Navigation, View Model, View Binding, RecyclerView
 
 Uygulama İçi Görseller:
 
