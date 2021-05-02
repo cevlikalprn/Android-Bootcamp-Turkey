@@ -64,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
+        android:textColor="@color/white"
         android:text="@string/btn_save"
         app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"

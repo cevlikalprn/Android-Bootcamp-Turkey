@@ -29,9 +29,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private val args: HomeFragmentArgs by navArgs()
 
     private lateinit var itemList: List<Expense>
-    private lateinit var dollarList: List<Expense>
-    private lateinit var euroList: List<Expense>
-    private lateinit var sterlinList: List<Expense>
 
     private lateinit var preferences: SharedPreferences
     private var sum = 0.0
@@ -96,7 +93,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                             if(currencyType != 0)
                             {
                                 convertToTurkLirasi(item, usd, eur, gbp)
-                                expenseViewModel.readAllData.value = itemList
                             }
                         }
                         1 -> { // Dolar
@@ -108,7 +104,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                                 val dollar = item.amountOfMoney * usd
                                 item.amountOfMoney = dollar
                                 item.currencyType = 1
-                                expenseViewModel.readAllData.value = itemList
                             }
                         }
                         2 -> { // Euro
@@ -120,7 +115,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                                 val euro = item.amountOfMoney * eur
                                 item.amountOfMoney = euro
                                 item.currencyType = 2
-                                expenseViewModel.readAllData.value = itemList
                             }
                         }
                         3 -> { // Sterlin
@@ -132,15 +126,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
                                 val sterlin = item.amountOfMoney * gbp
                                 item.amountOfMoney = sterlin
                                 item.currencyType = 3
-                                expenseViewModel.readAllData.value = itemList
                             }
                         }
                     }
                 }
+                expenseViewModel.readAllData.value = itemList
             }
-
         })
-
     }
 
     override fun onClick(view: View?) {
@@ -222,5 +214,4 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
         }
     }
-
 }
